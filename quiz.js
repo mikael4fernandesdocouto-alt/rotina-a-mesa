@@ -33,32 +33,64 @@ const questions = [
 
 const profiles = {
   P: {
-    title: "Comece pelas decisões da semana.",
+    name: "Decisão",
+    title: "O seu gargalo está na decisão.",
+    summary: "Você não trava por falta de tempo. Trava porque a refeição continua sendo uma decisão aberta na hora em que você já está com fome. Cada escolha adiada vira delivery, lanche ou o mesmo prato de sempre.",
+    error: "O plano quebra quando a semana começa e nenhuma refeição está nomeada. Aí a decisão volta para o momento de maior cansaço, e é exatamente ali que ela costuma falhar.",
+    gains: [
+      "Você para de decidir o que comer já com fome.",
+      "A lista de compras passa a ter destino, não só variedade.",
+      "A semana começa com duas refeições resolvidas antes da segunda-feira.",
+    ],
     actions: ["Reserve um momento da semana para olhar sua agenda.",
       "Escolha quais refeições precisam ser decididas com antecedência.",
       "Confira o que já tem em casa e monte a lista com o que falta."],
-    offer: "Comece pelo planejador semanal e transforme as refeições escolhidas em uma lista de compras.",
+    offer: "O planejador semanal transforma as refeições que você já escolheu em uma lista de compras pronta.",
   },
   T: {
-    title: "Comece simplificando o preparo.",
+    name: "Tempo",
+    title: "O seu gargalo está no tempo.",
+    summary: "A sua rotina não comporta uma organização longa. Quando o método pede mais tempo do que você tem, ele é abandonado na segunda ou na terça, e a semana volta para o improviso.",
+    error: "O plano quebra quando ele exige uma hora de domingo que você não tem. Sem um recorte de 15 minutos, a semana inteira fica sem ponto de partida.",
+    gains: [
+      "Você sabe o que adiantar primeiro, mesmo em dia corrido.",
+      "O preparo deixa de competir com o cansaço no fim do dia.",
+      "Uma opção simples fica pronta para quando o plano mudar.",
+    ],
     actions: ["Escolha dois dias corridos para organizar primeiro.",
       "Separe em uma lista o que você pode adiantar no tempo que tem.",
       "Deixe uma opção simples escolhida para os dias em que o plano mudar."],
-    offer: "Comece pelo checklist de preparo para decidir o que adiantar e quando.",
+    offer: "O checklist de preparo resolve o que fazer primeiro nos dias em que não sobra tempo.",
   },
   V: {
-    title: "Comece reunindo suas ideias.",
+    name: "Variedade",
+    title: "O seu gargalo está na variedade.",
+    summary: "Você sabe cozinhar, mas repete sempre as mesmas cinco coisas. Sem repertório à mão, variar vira improviso, e o improviso termina no mesmo pedido de delivery de sempre.",
+    error: "O plano quebra quando chega a hora de escolher e você não lembra de nada além do arroz com frango. A falta de repertório é lida como falta de vontade, mas é falta de lista.",
+    gains: [
+      "Você consulta ideias em vez de tentar lembrar delas.",
+      "As opções ficam separadas por tipo de dia: corrido ou tranquilo.",
+      "A semana ganha variação sem aumentar o tempo de preparo.",
+    ],
     actions: ["Anote cinco preparações que você já conhece.",
       "Separe as opções por situação, como dias corridos e dias mais tranquilos.",
       "Escolha duas opções da lista para encaixar na semana."],
-    offer: "Comece pelo banco editável de ideias e consulte sua lista quando precisar variar.",
+    offer: "O banco de ideias editável resolve o \"não sei o que fazer\" antes que ele vire pedido de delivery.",
   },
   C: {
-    title: "Comece com um plano que caiba na rotina.",
+    name: "Constância",
+    title: "O seu gargalo está na constância.",
+    summary: "Você começa bem, mas perde o ritmo no meio da semana. Não é falta de plano. É falta de um plano que sobreviva à semana que realmente aconteceu.",
+    error: "O plano quebra na quinta-feira, quando um imprevisto desmonta dois dias e você abandona o restante. Sem uma revisão curta, o que funcionou não é reaproveitado.",
+    gains: [
+      "O que funcionou é repetido em vez de redescoberto.",
+      "Um imprevisto ajusta dois dias, não a semana inteira.",
+      "O plano da semana seguinte nasce do que já deu certo.",
+    ],
     actions: ["Escolha duas refeições para organizar nesta semana.",
       "Marque um dia para revisar o que funcionou.",
       "Ajuste o plano da próxima semana conforme os horários disponíveis."],
-    offer: "Comece pelo roteiro de revisão semanal para repetir o que funcionou e ajustar o restante.",
+    offer: "O roteiro de revisão semanal mostra o que repetir e o que ajustar, para o plano não morrer na quinta.",
   },
 };
 
@@ -74,7 +106,16 @@ const formatNotes = [
   "Para combinar os formatos, deixe o planejador impresso em casa e consulte a lista no celular.",
 ];
 
-function scoreAnswers(answers) {
+function maxFor(profile) {
+  let max = 0;
+  for (const [, choices] of questions) {
+    const best = Math.max(0, ...choices.filter(([, key]) => key === profile).map(([, , points]) => points || 0));
+    max += best;
+  }
+  return max;
+}
+
+function evaluate(answers) {
   if (answers.length !== questions.length || questions.some(([, choices], index) => !choices[answers[index]])) {
     return null;
   }
@@ -86,17 +127,21 @@ function scoreAnswers(answers) {
   const highest = Math.max(...Object.values(scores));
   const tied = Object.keys(scores).filter(profile => scores[profile] === highest);
   const preference = questions[0][1][answers[0]][1];
-  return tied.includes(preference) ? preference : tied[0];
+  return { profile: tied.includes(preference) ? preference : tied[0], scores };
 }
 
-const config = window.ROTINA_CONFIG;
+const config = window.ROTINA_CONFIG ?? {};
+const offerConfig = config.offer ?? {};
+const proofConfig = config.proof ?? {};
 const element = id => document.getElementById(id);
 const answers = Array(questions.length).fill(null);
 const campaignTags = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+const money = value => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
 let step = 0;
 let currentPage;
 let lastStepView;
 let started = false;
+let loading = false;
 
 function validHttps(value) {
   try {
@@ -143,6 +188,116 @@ function offerDestination() {
   return url.href;
 }
 
+/* ---------------- prova social, preço e urgência ---------------- */
+
+function renderProof() {
+  const total = Number(proofConfig.total);
+  if (Number.isFinite(total) && total > 0) {
+    element("proof").hidden = false;
+    element("proof-total").textContent = new Intl.NumberFormat("pt-BR").format(total);
+    const rating = Number(proofConfig.rating);
+    const reviews = Number(proofConfig.reviews);
+    if (rating > 0) {
+      const stars = "★".repeat(Math.round(rating)).padEnd(5, "☆");
+      element("proof-rating").innerHTML = `${stars} <b>${rating.toFixed(1).replace(".", ",")}</b>${reviews > 0 ? ` · ${new Intl.NumberFormat("pt-BR").format(reviews)} avaliações` : ""}`;
+    }
+  }
+  const live = Number(proofConfig.live);
+  const today = Number(proofConfig.today);
+  if (live > 0 || today > 0) {
+    element("live").hidden = false;
+    const parts = [];
+    if (live > 0) parts.push(`${new Intl.NumberFormat("pt-BR").format(live)} respondendo agora`);
+    if (today > 0) parts.push(`${new Intl.NumberFormat("pt-BR").format(today)} hoje`);
+    element("live-text").textContent = parts.join(" · ");
+  }
+}
+
+function renderOffer() {
+  const bonuses = Array.isArray(offerConfig.bonuses) ? offerConfig.bonuses : [];
+  element("bonuses").replaceChildren(...bonuses.map(bonus => {
+    const item = document.createElement("li");
+    const copy = document.createElement("div");
+    const title = document.createElement("b");
+    title.textContent = bonus.title;
+    copy.append(title);
+    if (bonus.detail) {
+      const detail = document.createElement("span");
+      detail.textContent = bonus.detail;
+      copy.append(detail);
+    }
+    item.append(copy);
+    if (Number(bonus.value) > 0) {
+      const anchor = document.createElement("s");
+      anchor.textContent = money(Number(bonus.value));
+      item.append(anchor);
+    }
+    return item;
+  }));
+
+  const bonusValue = bonuses.reduce((sum, bonus) => sum + (Number(bonus.value) || 0), 0);
+  const anchorTotal = (Number(offerConfig.anchorBRL) || 0) + bonusValue;
+  if (anchorTotal > 0) element("anchor-total").textContent = money(anchorTotal);
+
+  const price = Number(config.priceBRL);
+  if (Number.isFinite(price) && price > 0) {
+    element("price").innerHTML = `${money(price)}<small>pagamento único · acesso imediato</small>`;
+    element("sticky-price").textContent = money(price);
+  }
+  if (offerConfig.priceNote) element("price-note").textContent = offerConfig.priceNote;
+
+  const days = Number(offerConfig.guaranteeDays);
+  if (days > 0) element("guarantee-title").textContent = `${days} dias de garantia.`;
+
+  const scarcity = offerConfig.scarcity ?? {};
+  const sold = Number(scarcity.sold);
+  const total = Number(scarcity.total);
+  if (sold > 0 && total > 0) {
+    element("scarcity").hidden = false;
+    element("scarcity").textContent = (scarcity.label || "{sold} de {total} vagas preenchidas")
+      .replace("{sold}", new Intl.NumberFormat("pt-BR").format(sold))
+      .replace("{total}", new Intl.NumberFormat("pt-BR").format(total));
+  }
+
+  element("countdown").hidden = !offerConfig.countdown;
+  element("topbar").hidden = !(offerConfig.countdown || (sold > 0 && total > 0));
+  element("topbar-text").textContent = offerConfig.banner || "Kit Rotina à Mesa com preço de lançamento";
+
+  if (canSell) {
+    element("preview-note").hidden = true;
+    element("checkout").href = offerDestination();
+    element("sale-details").textContent = `Pagamento único. ${config.accessDetails} Suporte em ${config.supportEmail}.`;
+    for (const [page, link] of [["terms", termsUrl], ["privacy", privacyUrl]]) {
+      element(`${page}-seller`).textContent = `Responsável pela oferta: ${config.seller}. Contato: ${config.supportEmail}.`;
+      element(`${page}-seller`).hidden = false;
+      element(`${page}-link`).href = link.href;
+      element(`${page}-link`).hidden = false;
+    }
+  } else {
+    for (const id of ["checkout", "sticky-buy"]) {
+      const cta = element(id);
+      cta.classList.add("is-disabled");
+      cta.removeAttribute("href");
+      cta.setAttribute("role", "link");
+      cta.setAttribute("aria-disabled", "true");
+    }
+    element("sale-details").hidden = true;
+  }
+}
+
+function tickCountdown() {
+  const clock = element("countdown-clock");
+  if (!clock) return;
+  const now = new Date();
+  const end = new Date(now);
+  end.setHours(23, 59, 59, 999);
+  const diff = Math.max(0, end - now);
+  const pad = value => String(value).padStart(2, "0");
+  clock.textContent = `${pad(Math.floor(diff / 3600000))}:${pad(Math.floor(diff / 60000) % 60)}:${pad(Math.floor(diff / 1000) % 60)}`;
+}
+
+/* ---------------- consentimento ---------------- */
+
 function updateConsent() {
   element("consent-notice").hidden = !config.measurementEnabled || measurementChoice !== null;
   element("preference-status").textContent = {
@@ -167,13 +322,17 @@ function chooseMeasurement(choice) {
   if (previous !== "allowed" && choice === "allowed" && currentPage === "home") track("landing_view");
 }
 
+/* ---------------- quiz ---------------- */
+
 function renderQuestion(focus) {
   const [title, choices] = questions[step];
-  element("step-label").textContent = `Pergunta ${step + 1} de ${questions.length}`;
+  const remaining = questions.length - step - 1;
+  element("step-label").textContent = `Pergunta ${step + 1} de ${questions.length}` +
+    (remaining === 0 ? " · última" : remaining <= 2 ? " · quase lá" : "");
   element("progress").value = step + 1;
   element("question-title").textContent = title;
   element("form-error").hidden = true;
-  element("continue").textContent = step === questions.length - 1 ? "Ver meu resultado" : "Continuar";
+  element("continue").textContent = step === questions.length - 1 ? "Ver meu diagnóstico" : "Continuar";
   element("options").replaceChildren(...choices.map(([label], index) => {
     const option = document.createElement("label");
     option.className = "option";
@@ -199,22 +358,78 @@ function focusScreen(id) {
   element(id).focus({ preventScroll: true });
 }
 
-function renderResult(profile) {
-  const result = profiles[profile];
-  element("result-title").textContent = result.title;
-  element("actions").replaceChildren(...result.actions.map(action => {
+function impact(profile, score) {
+  const max = maxFor(profile);
+  const ratio = max ? score / max : 0;
+  if (ratio >= 0.75) return { level: 2, label: "alto" };
+  if (ratio >= 0.5) return { level: 1, label: "moderado" };
+  return { level: 0, label: "inicial" };
+}
+
+function renderQuotes() {
+  const list = Array.isArray(config.testimonials) ? config.testimonials.filter(item => item?.text) : [];
+  const section = element("quotes");
+  section.hidden = list.length === 0;
+  element("quotes-title").hidden = list.length === 0;
+  section.replaceChildren(...list.map(item => {
+    const entry = document.createElement("li");
+    const head = document.createElement("div");
+    head.className = "quote-head";
+    const avatar = document.createElement("span");
+    avatar.className = "quote-avatar";
+    avatar.setAttribute("aria-hidden", "true");
+    avatar.textContent = String(item.name || "?").trim().slice(0, 1).toUpperCase();
+    const who = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = item.name || "Cliente";
+    who.append(name);
+    if (item.meta) {
+      const meta = document.createElement("div");
+      meta.textContent = item.meta;
+      who.append(meta);
+    }
+    head.append(avatar, who);
+    const stars = document.createElement("span");
+    stars.className = "stars";
+    stars.textContent = "★★★★★";
+    head.append(stars);
+    const text = document.createElement("p");
+    text.textContent = item.text;
+    entry.append(head, text);
+    return entry;
+  }));
+}
+
+function renderResult(result) {
+  const profile = profiles[result.profile];
+  element("profile-badge").textContent = `Perfil ${result.profile} · ${profile.name}`;
+  element("result-title").textContent = profile.title;
+  element("result-summary").textContent = profile.summary;
+  element("error-text").textContent = profile.error;
+  element("actions").replaceChildren(...profile.actions.map(action => {
     const item = document.createElement("li");
     item.textContent = action;
     return item;
   }));
+  element("gains").replaceChildren(...profile.gains.map(gain => {
+    const item = document.createElement("li");
+    item.textContent = gain;
+    return item;
+  }));
   element("example").textContent = householdExamples[answers[5]];
-  element("offer-lead").textContent = result.offer;
-  element("format").textContent = formatNotes[answers[7]];
+  element("offer-lead").textContent = `${profile.offer} ${formatNotes[answers[7]]}`;
+
+  const level = impact(result.profile, result.scores[result.profile]);
+  element("impact-label").textContent = level.label;
+  [...element("impact-scale").children].forEach((segment, index) => {
+    segment.classList.toggle("on", index <= level.level);
+  });
+  renderQuotes();
 }
 
 function renderRoute(focus = true) {
   const hash = location.hash;
-  const result = scoreAnswers(answers);
+  const result = evaluate(answers);
   let page = "home";
   if (hash === "#quiz") page = "quiz";
   if (hash === "#resultado" && result) page = "result";
@@ -224,7 +439,10 @@ function renderRoute(focus = true) {
   }
   const previous = currentPage;
   currentPage = page;
+  element("loading").hidden = true;
   for (const section of ["home", "quiz", "result"]) element(section).hidden = section !== page;
+  for (const section of ["pain", "how"]) element(section).hidden = page !== "home";
+  element("sticky-cta").hidden = page !== "result";
   if (page === "quiz") {
     if (!started) {
       started = true;
@@ -239,10 +457,76 @@ function renderRoute(focus = true) {
       if (focus) focusScreen("result-title");
     } else {
       if (previous === undefined) track("landing_view");
+      updateHomeCta();
       if (focus) focusScreen("hero-title");
     }
   }
 }
+
+function updateHomeCta() {
+  const answered = answers.filter(answer => answer !== null).length;
+  const done = answered === questions.length;
+  const note = element("resume-note");
+  const label = element("start-label");
+  const start = element("start");
+  if (done) {
+    start.href = "#resultado";
+    label.textContent = "Ver o meu diagnóstico";
+    note.textContent = "O seu diagnóstico está pronto e ainda não foi salvo.";
+    note.hidden = false;
+  } else if (answered > 0) {
+    start.href = "#quiz";
+    label.textContent = `Continuar de onde parei (${answered} de ${questions.length})`;
+    note.textContent = `Você parou na pergunta ${answered}. Faltam ${questions.length - answered}.`;
+    note.hidden = false;
+  } else {
+    start.href = "#quiz";
+    label.textContent = "Fazer meu diagnóstico gratuito";
+    note.hidden = true;
+  }
+}
+
+function startLoading() {
+  if (loading) return;
+  loading = true;
+  for (const section of ["home", "quiz", "result"]) element(section).hidden = true;
+  element("sticky-cta").hidden = true;
+  element("loading").hidden = false;
+  window.scrollTo(0, 0);
+  const bar = element("loading-bar");
+  const text = element("loading-text");
+  const checks = ["check-1", "check-2", "check-3"];
+  const messages = [
+    [0, "Cruzando as suas respostas…"],
+    [36, "Identificando o seu perfil…"],
+    [70, "Montando os 3 primeiros passos…"],
+  ];
+  const fast = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const startedAt = Date.now();
+  const duration = fast ? 500 : 2200;
+  bar.value = 0;
+  let write = 0;
+  const timer = setInterval(() => {
+    const elapsed = Date.now() - startedAt;
+    const target = Math.min(100, Math.round((elapsed / duration) * 100));
+    bar.value = target;
+    while (write < messages.length && target >= messages[write][0]) {
+      text.textContent = messages[write][1];
+      if (write > 0) element(checks[write - 1]).classList.add("done");
+      write += 1;
+    }
+    if (target >= 100) {
+      clearInterval(timer);
+      checks.forEach(id => element(id).classList.add("done"));
+      setTimeout(() => {
+        loading = false;
+        location.hash = "resultado";
+      }, fast ? 120 : 420);
+    }
+  }, 40);
+}
+
+/* ---------------- eventos ---------------- */
 
 element("question-form").addEventListener("change", event => {
   if (event.target.name === "answer") {
@@ -261,9 +545,9 @@ element("question-form").addEventListener("submit", event => {
   if (step < questions.length - 1) {
     step += 1;
     renderQuestion(true);
-  } else if (scoreAnswers(answers)) {
+  } else if (evaluate(answers)) {
     track("quiz_complete");
-    location.hash = "resultado";
+    startLoading();
   }
 });
 
@@ -289,19 +573,19 @@ element("preferences").hidden = !config.measurementEnabled;
 element("privacy-measurement").textContent = config.measurementEnabled
   ? "Com sua permissão, a página disponibiliza eventos genéricos de navegação e guarda sua preferência neste navegador. Você pode alterá-la aqui."
   : "A medição opcional está desativada nesta versão.";
-if (canSell) {
-  element("preview-note").hidden = true;
-  element("sale").hidden = false;
-  element("price").textContent = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(config.priceBRL);
-  element("sale-details").textContent = `Pagamento único. ${config.accessDetails} Suporte em ${config.supportEmail}.`;
-  for (const [page, link] of [["terms", termsUrl], ["privacy", privacyUrl]]) {
-    element(`${page}-seller`).textContent = `Responsável pela oferta: ${config.seller}. Contato: ${config.supportEmail}.`;
-    element(`${page}-seller`).hidden = false;
-    element(`${page}-link`).href = link.href;
-    element(`${page}-link`).hidden = false;
-  }
-  element("checkout").addEventListener("click", () => track("offer_click"));
+
+for (const id of ["checkout", "sticky-buy"]) {
+  element(id).addEventListener("click", event => {
+    if (!canSell) event.preventDefault();
+    track("offer_click");
+  });
 }
+
+renderProof();
+renderOffer();
+renderQuotes();
+tickCountdown();
+setInterval(tickCountdown, 1000);
 updateConsent();
 window.addEventListener("hashchange", () => renderRoute());
 renderRoute(false);
