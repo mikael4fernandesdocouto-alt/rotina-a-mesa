@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Responda oito perguntas e descubra por onde começar a organizar as compras e as refeições da semana.">
+  <meta name="theme-color" content="#f8f5ec">
+  <meta name="referrer" content="strict-origin">
+  <title>Rotina à Mesa | Quiz de organização de refeições</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./config.js" defer></script>
+  <script src="./quiz.js" defer></script>
+</head>
+<body>
+  <header class="site-head">
+    <div class="wrap head-inner">
+      <a class="brand" href="#inicio" aria-label="Rotina à Mesa, início"><span class="mark" aria-hidden="true"></span> Rotina à Mesa</a>
+      <span class="head-note">Organização de refeições</span>
+    </div>
+  </header>
+  <main class="wrap" id="app">
+    <section id="home" class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker"><span></span> Quiz gratuito · 8 perguntas</p>
+        <h1 id="hero-title" tabindex="-1">Refeições da semana, <em>por onde começar?</em></h1>
+        <p class="intro">Responda sobre sua rotina e descubra três passos para facilitar as compras, as decisões e o preparo.</p>
+        <a class="button primary" href="#quiz">Começar meu quiz <span aria-hidden="true">↗</span></a>
+        <p class="fine">Para adultos. Veja o resultado sem cadastro.</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="./mesa.webp" alt="Prato de arroz, grão-de-bico, abóbora e folhas sobre uma mesa azul" width="960" height="720" fetchpriority="high">
+      </figure>
+    </section>
+    <section id="quiz" class="flow" hidden>
+      <div class="flow-top">
+        <button type="button" class="text-button" id="back">← Voltar</button>
+        <span id="step-label"></span>
+      </div>
+      <progress id="progress" max="8" value="1" aria-label="Progresso do quiz"></progress>
+      <form id="question-form">
+        <fieldset>
+          <legend id="question-title" tabindex="-1"></legend>
+          <div class="options" id="options"></div>
+        </fieldset>
+        <p class="form-error" id="form-error" role="alert" hidden>Escolha uma opção para continuar.</p>
+        <button class="button primary" id="continue" type="submit"></button>
+      </form>
+      <p class="fine">As respostas duram enquanto esta página estiver aberta. Atualizar reinicia o quiz.</p>
+    </section>
+    <section id="result" class="result" hidden>
+      <div class="result-copy">
+        <button type="button" class="text-button" id="edit">← Revisar respostas</button>
+        <p class="kicker"><span></span> Seu resultado</p>
+        <h1 id="result-title" tabindex="-1"></h1>
+        <ol id="actions" class="actions"></ol>
+        <p class="example" id="example"></p>
+        <p class="fine">O resultado resume suas preferências de organização. O quiz tem finalidade educativa.</p>
+      </div>
+      <aside class="offer" aria-labelledby="offer-title">
+        <p class="kicker"><span></span> Kit digital</p>
+        <h2 id="offer-title">Kit Rotina à Mesa</h2>
+        <p id="offer-lead"></p>
+        <details class="sample"><summary>Ver exemplo de planejador</summary>
+          <table><caption>Exemplo de preenchimento</caption><thead><tr><th scope="col">Dia</th><th scope="col">O que decidir</th></tr></thead><tbody><tr><th scope="row">Segunda</th><td>Escolher duas refeições</td></tr><tr><th scope="row">Terça</th><td>Conferir o que já tem em casa</td></tr><tr><th scope="row">Quarta</th><td>Completar a lista de compras</td></tr></tbody></table>
+        </details>
+        <ul id="deliverables">
+          <li>Guia de uso e planejador semanal</li>
+          <li>Lista de compras e checklist de preparo</li>
+          <li>Banco de ideias e roteiros para começar</li>
+        </ul>
+        <p id="format" class="fine"></p>
+        <div id="sale" hidden>
+          <p class="price" id="price"></p>
+          <p id="sale-details" class="fine"></p>
+          <a class="button primary" id="checkout">Comprar o kit <span aria-hidden="true">↗</span></a>
+        </div>
+        <p id="preview-note" class="preview-note">Prévia da oferta. O kit ainda está em preparação.</p>
+      </aside>
+    </section>
+    <noscript><p class="fine">Ative o JavaScript para responder ao quiz.</p></noscript>
+  </main>
+  <footer class="site-foot wrap">
+    <span>Rotina à Mesa</span>
+    <div><button class="text-button" data-dialog="privacy">Privacidade</button><button class="text-button" data-dialog="terms">Termos</button></div>
+  </footer>
+  <dialog id="privacy" aria-labelledby="privacy-title">
+    <form method="dialog"><button class="text-button close" aria-label="Fechar">✕</button></form>
+    <h2 id="privacy-title">Privacidade</h2>
+    <p>As respostas são usadas nesta página para calcular o resultado e são descartadas ao sair ou recarregar. O quiz funciona sem cadastro.</p>
+    <p id="privacy-measurement"></p>
+    <div id="preferences" hidden>
+      <p id="preference-status" aria-live="polite"></p>
+      <div class="preference-buttons"><button id="allow" type="button" class="button primary">Permitir medição</button><button id="decline" type="button" class="text-button">Recusar medição</button></div>
+    </div>
+    <p id="privacy-seller" hidden></p>
+    <a id="privacy-link" hidden>Ver política de privacidade completa</a>
+  </dialog>
+  <dialog id="terms" aria-labelledby="terms-title">
+    <form method="dialog"><button class="text-button close" aria-label="Fechar">✕</button></form>
+    <h2 id="terms-title">Termos de uso</h2>
+    <p>O Rotina à Mesa oferece um quiz educativo para adultos que querem organizar refeições e compras. O resultado apresenta sugestões de organização.</p>
+    <p id="terms-seller" hidden></p>
+    <a id="terms-link" hidden>Ver termos da oferta</a>
+  </dialog>
+  <div id="consent-notice" class="consent" hidden>
+    <p>Você pode escolher se quer permitir a medição de visitas e interações com o quiz.</p>
+    <button class="text-button" data-dialog="privacy">Escolher preferências</button>
+  </div>
+</body>
+</html>
