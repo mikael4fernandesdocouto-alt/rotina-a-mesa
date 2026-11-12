@@ -72,7 +72,22 @@ h1 em { font-style: italic; color: var(--green); }
 
 /* Bloco de compra: estilos por prefixo de ID, para funcionar com qualquer código que a Kiwify gerar */
 .buy-block { margin-top: .85rem; }
-.buy-block > div[id^="kiwify-upsell-"] { padding: 0 !important; }
+.buy-block > div[id^="kiwify-upsell-"] {
+  display: flex; flex-direction: column;
+  padding: 0 !important;
+}
+.buy-block > div[id^="kiwify-upsell-"] > [id^="kiwify-upsell-trigger-"] { order: 1; }
+.buy-block > div[id^="kiwify-upsell-"] > [id^="kiwify-upsell-cancel-trigger-"] { order: 2; }
+.buy-block > div[id^="kiwify-upsell-"] > [id^="kiwify-upsell-inline-"] { order: 3; margin-top: .55rem; }
+.buy-block [id^="kiwify-upsell-inline-"] label {
+  display: block; font-size: .74rem !important; font-weight: 500 !important;
+  color: var(--muted) !important; margin-bottom: .25rem;
+}
+.buy-block [id^="kiwify-upsell-inline-"] select {
+  width: 100%; min-height: 42px; border-radius: .4rem;
+  border: 1px solid var(--line) !important; background: var(--card) !important;
+  color: var(--muted) !important; font: 400 .85rem/1.2 var(--sans) !important;
+}
 .buy-block [id^="kiwify-upsell-trigger-"] {
   display: block; width: 100%; min-height: 58px;
   padding: .9rem 1rem;
@@ -263,6 +278,19 @@ footer p + p { margin-top: .3rem; }
     stickyDecline.textContent = "Processando…";
     decline()?.click();
   });
+
+  // O seletor da Kiwify abre em 2x (com juros). Deixa no valor à vista, que é o preço mostrado na página.
+  function fixInstallments() {
+    document.querySelectorAll('[id^="kiwify-upsell-inline-installments-"]').forEach((select) => {
+      const cash = [...select.options].find((option) => /^R\$/.test(option.text.trim()));
+      if (cash && select.value !== cash.value) {
+        select.value = cash.value;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+  }
+  fixInstallments();
+  new MutationObserver(fixInstallments).observe(document.body, { childList: true, subtree: true });
 
   // A barra só aparece depois que o botão de compra sai da tela.
   function updateSticky() {
