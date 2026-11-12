@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#f6f1e4">
+<title>Molhos Secretos | Oferta pós-compra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f6f1e4;
+  --ink: #16241e;
+  --green: #123a2e;
+  --green-deep: #09241b;
+  --mustard: #b8842a;
+  --line: #ddd4bf;
+  --muted: #5b6158;
+  --card: #fffdf5;
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: radial-gradient(#123a2e0a 1px, transparent 1px);
+  background-size: 17px 17px;
+  color: var(--ink);
+  font: 400 1rem/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+p, h1, h2, figure, ul { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+
+.confirm {
+  background: var(--green-deep); color: #eef4e8;
+  font-size: .78rem; padding: .5rem 0;
+}
+.confirm p { width: min(100% - 1.65rem, 34rem); margin-inline: auto; display: flex; align-items: center; gap: .45rem; }
+.confirm .check {
+  width: 1.05rem; height: 1.05rem; flex: none; display: grid; place-items: center;
+  border: 1px solid #b7cdb2; border-radius: 50%; font-size: .6rem; color: #b7cdb2;
+}
+
+main { width: min(100% - 1.65rem, 34rem); margin-inline: auto; padding-block: 1.4rem 1rem; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--green);
+}
+.eyebrow::before { content: ""; width: 1.3rem; height: 2px; background: var(--mustard); }
+h1 {
+  font-family: var(--serif); font-weight: 400; line-height: 1.02; letter-spacing: -.022em;
+  font-size: clamp(2.1rem, 8.5vw, 2.9rem); margin-top: .55rem;
+}
+h1 em { font-style: italic; color: var(--green); }
+.lead { margin-top: .6rem; font-size: .98rem; color: var(--muted); }
+.lead strong { color: var(--ink); }
+
+.price-line {
+  display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;
+  margin-top: 1.05rem; padding-top: .9rem; border-top: 1px solid var(--line);
+}
+.price { font-family: var(--serif); font-size: clamp(2.1rem, 8vw, 2.5rem); line-height: 1; color: var(--green); }
+.price-note { font-size: .82rem; color: var(--muted); }
+
+/* Bloco de compra: estilos por prefixo de ID, para funcionar com qualquer código que a Kiwify gerar */
+.buy-block { margin-top: .85rem; }
+.buy-block > div[id^="kiwify-upsell-"] { padding: 0 !important; }
+.buy-block [id^="kiwify-upsell-trigger-"] {
+  display: block; width: 100%; min-height: 58px;
+  padding: .9rem 1rem;
+  border: 0; border-radius: .5rem; background: var(--green); color: #fdfbf3;
+  font: 700 1.02rem/1.25 var(--sans); cursor: pointer;
+  box-shadow: 0 5px 0 var(--green-deep);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.buy-block [id^="kiwify-upsell-trigger-"]:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--green-deep); }
+.buy-block [id^="kiwify-upsell-cancel-trigger-"] {
+  display: grid; place-items: center; min-height: 44px; margin-top: .4rem;
+  color: var(--muted); text-decoration: underline; text-underline-offset: 3px;
+  cursor: pointer; font-size: .85rem; text-align: center; padding: .3rem;
+}
+.micro { margin-top: .55rem; font-size: .78rem; color: var(--muted); text-align: center; line-height: 1.45; }
+.micro b { color: var(--ink); }
+
+.shot { margin-top: 1.15rem; }
+.shot img {
+  display: block; width: 100%; height: auto;
+  border-radius: .9rem;
+  box-shadow: 0 16px 34px #09241b26;
+}
+
+.sub {
+  font-family: var(--serif); font-weight: 400; letter-spacing: -.02em;
+  font-size: 1.35rem; margin-top: 1.4rem; color: var(--green);
+}
+.menu {
+  list-style: none; padding: 0; margin-top: .7rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: .1rem 1rem;
+}
+.menu li {
+  font-size: .88rem; color: var(--ink); padding: .3rem 0 .3rem .95rem;
+  position: relative; line-height: 1.3;
+}
+.menu li::before {
+  content: ""; position: absolute; left: 0; top: .62rem;
+  width: .38rem; height: .38rem; border-radius: 50%; background: var(--mustard);
+}
+
+.note {
+  margin-top: 1.1rem; padding-top: .9rem; border-top: 1px dashed var(--line);
+  font-size: .85rem; color: var(--muted); line-height: 1.5;
+}
+.note b { color: var(--ink); }
+.allergen { margin-top: .6rem; font-size: .78rem; color: var(--muted); }
+.guarantee {
+  display: flex; gap: .55rem; align-items: flex-start;
+  margin-top: .9rem; font-size: .8rem; color: var(--muted); line-height: 1.45;
+}
+.guarantee span { flex: none; margin-top: .1rem; }
+
+footer {
+  width: min(100% - 1.65rem, 34rem); margin-inline: auto;
+  border-top: 1px solid var(--line); padding-block: 1rem 1.4rem;
+  color: var(--muted); font-size: .72rem; line-height: 1.5;
+}
+footer p + p { margin-top: .3rem; }
+
+/* Barra fixa no celular */
+.sticky {
+  display: none; position: fixed; inset: auto 0 0; z-index: 9;
+  background: #fffdf5f2; backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+  padding: .5rem .85rem calc(.5rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 20px #09241b14;
+  transition: opacity .18s ease;
+}
+.sticky-row { width: min(100%, 34rem); margin-inline: auto; display: flex; align-items: center; gap: .7rem; }
+.sticky-info { display: flex; flex-direction: column; line-height: 1.15; flex: none; }
+.sticky-info strong { font-family: var(--serif); font-size: 1.12rem; color: var(--green); }
+.sticky-info span { font-size: .66rem; color: var(--muted); }
+.sticky-btn {
+  flex: 1; min-height: 46px; border: 0; border-radius: .5rem;
+  background: var(--green); color: #fdfbf3; font: 700 .93rem/1.2 var(--sans);
+  cursor: pointer; box-shadow: 0 3px 0 var(--green-deep);
+}
+.sticky-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--green-deep); }
+.sticky-decline {
+  display: block; width: 100%; min-height: 28px; margin: .1rem auto 0;
+  background: none; border: 0; color: var(--muted);
+  font: 400 .7rem/1.2 var(--sans); text-decoration: underline; cursor: pointer;
+}
+
+@media (max-width: 45.99rem) {
+  body { padding-bottom: 88px; }
+  .sticky { display: block; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .buy-block [id^="kiwify-upsell-trigger-"], .sticky-btn { transition: none; }
+}
+</style>
+</head>
+<body>
+<header class="confirm">
+  <p><span class="check" aria-hidden="true">✓</span> Pagamento aprovado · seu acesso já está liberado</p>
+</header>
+
+<main>
+  <p class="eyebrow">Última tela</p>
+  <h1>O mesmo prato, <em>outro sabor</em>.</h1>
+  <p class="lead">Oito molhos e temperos para os <strong>20 jantares</strong> do seu e-book. Trocar o molho muda o prato inteiro, sem receita nova e sem compra nova no mercado.</p>
+
+  <div class="price-line">
+    <p class="price">R$ 9,90</p>
+    <p class="price-note">8 receitas · 20 combinações · até R$ 1,24 por molho</p>
+  </div>
+
+  <div class="buy-block">
+    <!--
+      PENDENTE: cole aqui o bloco gerado no Gerador de upsell da Kiwify para a oferta "Molhos Secretos".
+      O esqueleto abaixo é só para manter o layout no lugar — este ID não cobra nada.
+      Ao substituir, mantenha: div com data-upsell-url / data-downsell-url, o button de aceite,
+      a div de recusa e o <script> no fim.
+    -->
+    <div id="kiwify-upsell-PENDENTE" data-upsell-url="" data-downsell-url="">
+      <button id="kiwify-upsell-trigger-PENDENTE">Sim, quero os Molhos Secretos</button>
+      <div id="kiwify-upsell-cancel-trigger-PENDENTE">Agora não, quero seguir com o que já comprei</div>
+    </div>
+  </div>
+
+  <p class="micro">Cobrança única no mesmo cartão do pedido. Recusar não afeta o que você já comprou.</p>
+
+  <figure class="shot">
+    <img src="./molhos.webp" srcset="./molhos-700.webp 700w, ./molhos.webp 1100w" sizes="34rem" alt="Capa do e-book Molhos Secretos, da Rotina à Mesa, cercada por tigelas de creme verde, tomate defumado e pasta de abóbora" width="1100" height="1100" fetchpriority="high" decoding="async">
+  </figure>
+
+  <h2 class="sub">Os oito</h2>
+  <ul class="menu">
+    <li>Creme Verde de Iogurte</li>
+    <li>Tomate Defumado</li>
+    <li>Limão com Alho Dourado</li>
+    <li>Vinagrete de Tomate Crocante</li>
+    <li>Mostarda Cremosa de Iogurte</li>
+    <li>Pasta Dourada de Abóbora</li>
+    <li>Creme de Feijão com Limão</li>
+    <li>Tempero de Páprica e Cominho</li>
+  </ul>
+
+  <p class="note"><b>Já vem com o guia de combinação:</b> as quatro semanas do cardápio apontam qual molho entra em cada jantar — 20 combinações, medidas para uma pessoa (dobra para duas).</p>
+  <p class="allergen">Duas receitas levam iogurte (leite) e uma leva mostarda.</p>
+
+  <p class="guarantee"><span aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#123a2e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.4-2.9 8.2-7 9.6C7.9 17.2 5 13.4 5 9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span> Mesma garantia do seu pedido: se não fizer sentido, você pede reembolso pelo suporte.</p>
+</main>
+
+<footer>
+  <p>Oferta opcional de pós-compra. Recusar não altera o seu acesso ao que você já comprou.</p>
+  <p>Conteúdo educativo de receitas. Não substitui acompanhamento nutricional individual.</p>
+</footer>
+
+<div class="sticky" id="sticky">
+  <div class="sticky-row">
+    <div class="sticky-info"><strong>R$ 9,90</strong><span>8 molhos</span></div>
+    <button class="sticky-btn" type="button" id="sticky-add">Adicionar</button>
+  </div>
+  <button class="sticky-decline" type="button" id="sticky-decline">Agora não</button>
+</div>
+
+<script>
+  const sticky = document.getElementById("sticky");
+  const stickyAdd = document.getElementById("sticky-add");
+  const stickyDecline = document.getElementById("sticky-decline");
+  const accept = () => document.querySelector('[id^="kiwify-upsell-trigger-"]');
+  const decline = () => document.querySelector('[id^="kiwify-upsell-cancel-trigger-"]');
+  let sending = false;
+
+  const cancel = decline();
+  if (cancel) {
+    cancel.setAttribute("role", "button");
+    cancel.tabIndex = 0;
+    cancel.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        cancel.click();
+      }
+    });
+  }
+
+  stickyAdd.addEventListener("click", () => {
+    if (sending) return;
+    sending = true;
+    const original = stickyAdd.textContent;
+    stickyAdd.textContent = "Processando…";
+    const button = accept();
+    if (button) button.click();
+    setTimeout(() => {
+      sending = false;
+      stickyAdd.textContent = original;
+    }, 2500);
+  });
+
+  stickyDecline.addEventListener("click", () => {
+    if (sending) return;
+    sending = true;
+    stickyDecline.textContent = "Processando…";
+    decline()?.click();
+  });
+
+  // A barra só aparece depois que o botão de compra sai da tela.
+  function updateSticky() {
+    const button = accept();
+    if (!button) return;
+    const box = button.getBoundingClientRect();
+    const onScreen = box.bottom > 0 && box.top < window.innerHeight - 40;
+    sticky.style.opacity = onScreen ? "0" : "1";
+    sticky.style.pointerEvents = onScreen ? "none" : "";
+  }
+  window.addEventListener("scroll", updateSticky, { passive: true });
+  window.addEventListener("resize", updateSticky);
+  updateSticky();
+  document.addEventListener("visibilitychange", updateSticky);
+</script>
+</body>
+</html>
