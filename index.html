@@ -3,34 +3,82 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Responda oito perguntas e descubra por onde começar a organizar as compras e as refeições da semana.">
+  <meta name="description" content="Responda 8 perguntas em 2 minutos e descubra o que está travando a organização das suas refeições, com os 3 primeiros passos para resolver.">
   <meta name="theme-color" content="#f8f5ec">
   <meta name="referrer" content="strict-origin">
-  <title>Rotina à Mesa | Quiz de organização de refeições</title>
+  <title>Rotina à Mesa | Diagnóstico gratuito da sua rotina de refeições</title>
+  <meta property="og:title" content="Descubra em 2 minutos por que a sua semana termina no improviso">
+  <meta property="og:description" content="Diagnóstico gratuito com 8 perguntas. Veja o seu perfil e os 3 ajustes que mais destravam compras, decisões e preparo.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="./style.css">
   <script src="./config.js" defer></script>
   <script src="./quiz.js" defer></script>
 </head>
 <body>
+  <div class="topbar" id="topbar" hidden>
+    <p><strong id="topbar-title">Oferta de lançamento</strong><span id="topbar-text"></span></p>
+    <p class="countdown" id="countdown" hidden>termina em <span id="countdown-clock">--:--:--</span></p>
+  </div>
+
   <header class="site-head">
     <div class="wrap head-inner">
       <a class="brand" href="#inicio" aria-label="Rotina à Mesa, início"><span class="mark" aria-hidden="true"></span> Rotina à Mesa</a>
-      <span class="head-note">Organização de refeições</span>
+      <span class="head-note" id="head-note">Organização de refeições</span>
     </div>
   </header>
+
   <main class="wrap" id="app">
     <section id="home" class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="kicker"><span></span> Quiz gratuito · 8 perguntas</p>
-        <h1 id="hero-title" tabindex="-1">Refeições da semana, <em>por onde começar?</em></h1>
-        <p class="intro">Responda sobre sua rotina e descubra três passos para facilitar as compras, as decisões e o preparo.</p>
-        <a class="button primary" href="#quiz">Começar meu quiz <span aria-hidden="true">↗</span></a>
-        <p class="fine">Para adultos. Veja o resultado sem cadastro.</p>
+        <p class="kicker"><span></span> Diagnóstico gratuito · 8 perguntas · 2 minutos</p>
+        <h1 id="hero-title" tabindex="-1">Descubra por que a sua semana <em>termina no improviso</em></h1>
+        <p class="intro">Responda 8 perguntas sobre a sua rotina e receba o diagnóstico do que mais atrapalha as suas compras, as decisões e o preparo, com os 3 primeiros passos para corrigir.</p>
+        <a class="button primary" id="start" href="#quiz"><span id="start-label">Fazer meu diagnóstico gratuito</span> <span aria-hidden="true">↗</span></a>
+        <p class="fine" id="resume-note" hidden></p>
+        <ul class="assurance">
+          <li>100% gratuito</li>
+          <li>Resultado na hora</li>
+          <li>Sem cadastro</li>
+        </ul>
+        <div class="proof" id="proof" hidden>
+          <div class="avatars" aria-hidden="true"><span>AC</span><span>JL</span><span>MP</span><span>RS</span><span>+</span></div>
+          <div>
+            <p class="proof-line"><strong id="proof-total">0</strong> pessoas já fizeram este diagnóstico</p>
+            <p class="stars" id="proof-rating" aria-label="Avaliação média"></p>
+          </div>
+        </div>
       </div>
       <figure class="hero-figure">
         <img src="./mesa.webp" alt="Prato de arroz, grão-de-bico, abóbora e folhas sobre uma mesa azul" width="960" height="720" fetchpriority="high">
+        <figcaption>
+          <span>Feito para quem cozinha a própria semana</span>
+          <span class="live-dot" id="live" hidden><i aria-hidden="true"></i> <span id="live-text"></span></span>
+        </figcaption>
       </figure>
     </section>
+
+    <section id="pain" class="pain" aria-labelledby="pain-title">
+      <p class="kicker"><span></span> Reconhece alguma dessas cenas?</p>
+      <h2 id="pain-title">O problema quase nunca é falta de receita.</h2>
+      <ul class="pain-list">
+        <li><span aria-hidden="true">19h</span> Você abre a geladeira, olha tudo e fecha sem tirar nada.</li>
+        <li><span aria-hidden="true">🍂</span> A verdura compra na terça, murcha na quinta e vai embora no domingo.</li>
+        <li><span aria-hidden="true">🛵</span> O delivery virou a terceira refeição do dia, outra vez.</li>
+        <li><span aria-hidden="true">📝</span> Você até monta uma lista, mas ela nunca bate com a semana que você realmente teve.</li>
+      </ul>
+      <p class="pain-close">Se você se viu em duas dessas cenas, a sua dificuldade é <strong>decidir com antecedência</strong>. É exatamente isso que este diagnóstico mede.</p>
+    </section>
+
+    <section id="how" class="how" aria-labelledby="how-title">
+      <h2 id="how-title">Como funciona</h2>
+      <ol class="steps">
+        <li><span>1</span><div><h3>Responda 8 perguntas</h3><p>Cerca de 2 minutos, no celular. Sem cadastro e sem e-mail.</p></div></li>
+        <li><span>2</span><div><h3>Receba o seu perfil</h3><p>Você descobre se o seu gargalo é decisão, tempo, variedade ou constância.</p></div></li>
+        <li><span>3</span><div><h3>Veja os 3 primeiros passos</h3><p>Ajustes que cabem na sua semana, com um exemplo aplicado à sua casa.</p></div></li>
+      </ol>
+      <p class="fine">Ao final você recebe: perfil de organização, os 3 ajustes prioritários e um exemplo de planejador preenchido.</p>
+    </section>
+
     <section id="quiz" class="flow" hidden>
       <div class="flow-top">
         <button type="button" class="text-button" id="back">← Voltar</button>
@@ -45,44 +93,123 @@
         <p class="form-error" id="form-error" role="alert" hidden>Escolha uma opção para continuar.</p>
         <button class="button primary" id="continue" type="submit"></button>
       </form>
-      <p class="fine">As respostas duram enquanto esta página estiver aberta. Atualizar reinicia o quiz.</p>
+      <p class="fine" id="quiz-foot">Quanto mais honesto você for, mais preciso fica o resultado. As respostas duram enquanto esta página estiver aberta.</p>
     </section>
-    <section id="result" class="result" hidden>
-      <div class="result-copy">
-        <button type="button" class="text-button" id="edit">← Revisar respostas</button>
-        <p class="kicker"><span></span> Seu resultado</p>
-        <h1 id="result-title" tabindex="-1"></h1>
-        <ol id="actions" class="actions"></ol>
-        <p class="example" id="example"></p>
-        <p class="fine">O resultado resume suas preferências de organização. O quiz tem finalidade educativa.</p>
-      </div>
-      <aside class="offer" aria-labelledby="offer-title">
-        <p class="kicker"><span></span> Kit digital</p>
-        <h2 id="offer-title">Kit Rotina à Mesa</h2>
-        <p id="offer-lead"></p>
-        <details class="sample"><summary>Ver exemplo de planejador</summary>
-          <table><caption>Exemplo de preenchimento</caption><thead><tr><th scope="col">Dia</th><th scope="col">O que decidir</th></tr></thead><tbody><tr><th scope="row">Segunda</th><td>Escolher duas refeições</td></tr><tr><th scope="row">Terça</th><td>Conferir o que já tem em casa</td></tr><tr><th scope="row">Quarta</th><td>Completar a lista de compras</td></tr></tbody></table>
-        </details>
-        <ul id="deliverables">
-          <li>Guia de uso e planejador semanal</li>
-          <li>Lista de compras e checklist de preparo</li>
-          <li>Banco de ideias e roteiros para começar</li>
+
+    <section id="loading" class="loading" hidden aria-live="polite">
+      <div class="loading-inner">
+        <p class="kicker"><span></span> Quase pronto</p>
+        <h2>Montando o seu diagnóstico…</h2>
+        <progress id="loading-bar" max="100" value="0" aria-label="Montando o diagnóstico"></progress>
+        <p id="loading-text" class="loading-text">Cruzando as suas respostas…</p>
+        <ul class="loading-checks">
+          <li id="check-1">Perfil de organização</li>
+          <li id="check-2">Gargalo principal</li>
+          <li id="check-3">3 primeiros passos</li>
         </ul>
-        <p id="format" class="fine"></p>
-        <div id="sale" hidden>
-          <p class="price" id="price"></p>
-          <p id="sale-details" class="fine"></p>
-          <a class="button primary" id="checkout">Comprar o kit <span aria-hidden="true">↗</span></a>
-        </div>
-        <p id="preview-note" class="preview-note">Prévia da oferta. O kit ainda está em preparação.</p>
-      </aside>
+        <p class="fine">Sem cadastro. Nada é enviado.</p>
+      </div>
     </section>
+
+    <section id="result" hidden aria-labelledby="result-title">
+      <div class="result-head">
+        <button type="button" class="text-button" id="edit">← Revisar respostas</button>
+        <p class="kicker"><span></span> Diagnóstico pronto</p>
+        <p class="profile-badge" id="profile-badge"></p>
+        <h1 id="result-title" tabindex="-1"></h1>
+        <p class="result-summary" id="result-summary"></p>
+        <div class="impact" id="impact">
+          <span>Impacto na sua semana</span>
+          <div class="impact-scale" id="impact-scale" aria-hidden="true"><i></i><i></i><i></i></div>
+          <strong id="impact-label"></strong>
+        </div>
+      </div>
+
+      <div class="diag-grid">
+        <div class="diag-main">
+          <h2>Seus 3 primeiros passos</h2>
+          <ol id="actions" class="actions"></ol>
+          <p class="example" id="example"></p>
+
+          <div class="error-card">
+            <h3>Onde o seu plano costuma quebrar</h3>
+            <p id="error-text"></p>
+          </div>
+
+          <h2>O que muda quando a semana já está decidida</h2>
+          <ul class="gains" id="gains"></ul>
+
+          <h2 id="quotes-title">Quem já fez o diagnóstico</h2>
+          <ul class="quotes" id="quotes"></ul>
+        </div>
+
+        <aside class="offer" aria-labelledby="offer-title">
+          <p class="kicker"><span></span> Seu próximo passo</p>
+          <h2 id="offer-title">Kit Rotina à Mesa</h2>
+          <p id="offer-lead"></p>
+
+          <details class="sample"><summary>Ver exemplo de planejador</summary>
+            <table><caption>Exemplo de preenchimento</caption><thead><tr><th scope="col">Dia</th><th scope="col">O que decidir</th></tr></thead><tbody><tr><th scope="row">Segunda</th><td>Escolher duas refeições</td></tr><tr><th scope="row">Terça</th><td>Conferir o que já tem em casa</td></tr><tr><th scope="row">Quarta</th><td>Completar a lista de compras</td></tr></tbody></table>
+          </details>
+
+          <p class="stack-title">O que vem no kit</p>
+          <ul id="deliverables" class="value-stack">
+            <li><div><strong>Guia de uso + planejador semanal</strong><span>O passo a passo para decidir a semana em 20 minutos</span></div><s>R$ 47</s></li>
+            <li><div><strong>Lista de compras inteligente</strong><span>Montada a partir das refeições, não do que você lembra</span></div><s>R$ 37</s></li>
+            <li><div><strong>Checklist de preparo</strong><span>O que adiantar e em que ordem, para os dias corridos</span></div><s>R$ 27</s></li>
+            <li><div><strong>Banco de ideias editável</strong><span>Para consultar quando faltar repertório na hora da fome</span></div><s>R$ 27</s></li>
+          </ul>
+          <ul class="bonus-list" id="bonuses"></ul>
+
+          <p class="anchor" id="anchor"><span id="anchor-total">R$ 138</span> em materiais</p>
+          <p class="price" id="price"></p>
+          <p class="price-note" id="price-note"></p>
+
+          <div id="sale-continue">
+            <a class="button primary wide" id="checkout">Comprar o kit <span aria-hidden="true">↗</span></a>
+          </div>
+          <p id="sale-details" class="fine"></p>
+
+          <ul class="guarantee" id="guarantee">
+            <li><strong id="guarantee-title">7 dias de garantia</strong> Se não fizer sentido para a sua rotina, você pede o reembolso e recebe o valor de volta.</li>
+            <li>Acesso imediato após o pagamento.</li>
+            <li>Pagamento único, sem mensalidade.</li>
+          </ul>
+
+          <p class="scarcity" id="scarcity" hidden></p>
+          <p id="preview-note" class="preview-note">Prévia da oferta. O kit ainda está em preparação.</p>
+        </aside>
+      </div>
+
+      <section id="faq" class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Antes de decidir</h2>
+        <details><summary>Preciso saber cozinhar bem?</summary><p>Não. O kit trabalha com preparações simples e com o que adiantar, não com receitas técnicas. Se você sabe fazer arroz, ovo e uma refeição básica, o material funciona.</p></details>
+        <details><summary>Serve para quem mora sozinho?</summary><p>Sim. O planejador tem uma versão para uma pessoa, com lista de compras em quantidade menor, e a versão para famílias.</p></details>
+        <details><summary>É digital ou impresso?</summary><p>Digital, em PDF, para usar no celular ou imprimir. Você recebe os dois formatos no mesmo acesso.</p></details>
+        <details><summary>Quanto tempo vou gastar por semana?</summary><p>A proposta é decidir a semana em até 20 minutos e reduzir as decisões do dia a dia. O checklist de preparo é opcional para quem tem menos tempo.</p></details>
+        <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias para pedir o reembolso pelo suporte, sem precisar justificar. O valor é devolvido integralmente.</p></details>
+        <details><summary>Como recebo o material?</summary><p>O acesso é liberado por e-mail logo depois da confirmação do pagamento. O link fica disponível para download.</p></details>
+      </section>
+
+      <div class="ps">
+        <p><strong>P.S.</strong> O diagnóstico mostra onde a sua semana quebra. O kit mostra como ela passa a funcionar, com o planejador, a lista e o checklist já preenchidos para você só ajustar.</p>
+        <p><strong>P.S. 2</strong> Se você fechar esta página, o seu resultado não fica salvo. As respostas duram apenas enquanto a página estiver aberta.</p>
+      </div>
+    </section>
+
     <noscript><p class="fine">Ative o JavaScript para responder ao quiz.</p></noscript>
   </main>
+
   <footer class="site-foot wrap">
     <span>Rotina à Mesa</span>
     <div><button class="text-button" data-dialog="privacy">Privacidade</button><button class="text-button" data-dialog="terms">Termos</button></div>
   </footer>
+
+  <div class="sticky-cta" id="sticky-cta" hidden>
+    <div><strong id="sticky-price"></strong><span id="sticky-note">Kit Rotina à Mesa</span></div>
+    <a class="button primary" id="sticky-buy">Comprar <span aria-hidden="true">↗</span></a>
+  </div>
+
   <dialog id="privacy" aria-labelledby="privacy-title">
     <form method="dialog"><button class="text-button close" aria-label="Fechar">✕</button></form>
     <h2 id="privacy-title">Privacidade</h2>
@@ -98,7 +225,7 @@
   <dialog id="terms" aria-labelledby="terms-title">
     <form method="dialog"><button class="text-button close" aria-label="Fechar">✕</button></form>
     <h2 id="terms-title">Termos de uso</h2>
-    <p>O Rotina à Mesa oferece um quiz educativo para adultos que querem organizar refeições e compras. O resultado apresenta sugestões de organização.</p>
+    <p>O Rotina à Mesa oferece um quiz educativo para adultos que querem organizar refeições e compras. O resultado apresenta sugestões de organização e não substitui orientação de nutricionista ou médico.</p>
     <p id="terms-seller" hidden></p>
     <a id="terms-link" hidden>Ver termos da oferta</a>
   </dialog>
