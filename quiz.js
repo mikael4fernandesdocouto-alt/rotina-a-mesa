@@ -155,7 +155,8 @@ function validHttps(value) {
 const checkoutUrl = validHttps(config.checkoutUrl);
 const privacyUrl = validHttps(config.privacyUrl);
 const termsUrl = validHttps(config.termsUrl);
-const canSell = checkoutUrl?.origin === "https://pay.kiwify.com.br" &&
+const checkoutOrigins = ["https://pay.kiwify.com.br", "https://pay.kiwify.com"];
+const canSell = checkoutOrigins.includes(checkoutUrl?.origin) &&
   /^\/[a-z\d]+\/?$/i.test(checkoutUrl.pathname) && privacyUrl && termsUrl &&
   config.seller.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.supportEmail) &&
   config.accessDetails.trim() && Number.isFinite(config.priceBRL) && config.priceBRL > 0;
@@ -243,6 +244,7 @@ function renderOffer() {
   if (Number.isFinite(price) && price > 0) {
     element("price").innerHTML = `${money(price)}<small>pagamento único · acesso imediato</small>`;
     element("sticky-price").textContent = money(price);
+    if (element("quick-price")) element("quick-price").textContent = money(price);
   }
   if (offerConfig.priceNote) element("price-note").textContent = offerConfig.priceNote;
 
@@ -266,6 +268,8 @@ function renderOffer() {
   if (canSell) {
     element("preview-note").hidden = true;
     element("checkout").href = offerDestination();
+    if (element("checkout-top")) element("checkout-top").href = offerDestination();
+    if (element("quick-offer")) element("quick-offer").hidden = false;
     element("sale-details").textContent = `Pagamento único. ${config.accessDetails} Suporte em ${config.supportEmail}.`;
     for (const [page, link] of [["terms", termsUrl], ["privacy", privacyUrl]]) {
       element(`${page}-seller`).textContent = `Responsável pela oferta: ${config.seller}. Contato: ${config.supportEmail}.`;
@@ -274,8 +278,11 @@ function renderOffer() {
       element(`${page}-link`).hidden = false;
     }
   } else {
-    for (const id of ["checkout", "sticky-buy"]) {
+    // Sem dados de venda, o bloco resumido nem aparece: não faz sentido um botão morto no topo.
+    if (element("quick-offer")) element("quick-offer").hidden = true;
+    for (const id of ["checkout", "sticky-buy", "checkout-top"]) {
       const cta = element(id);
+      if (!cta) continue;
       cta.classList.add("is-disabled");
       cta.removeAttribute("href");
       cta.setAttribute("role", "link");
@@ -503,7 +510,7 @@ function startLoading() {
   ];
   const fast = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const startedAt = Date.now();
-  const duration = fast ? 500 : 2200;
+  const duration = fast ? 400 : 1200;
   bar.value = 0;
   let write = 0;
   const timer = setInterval(() => {
@@ -521,7 +528,7 @@ function startLoading() {
       setTimeout(() => {
         loading = false;
         location.hash = "resultado";
-      }, fast ? 120 : 420);
+      }, fast ? 100 : 300);
     }
   }, 40);
 }
@@ -574,8 +581,8 @@ element("privacy-measurement").textContent = config.measurementEnabled
   ? "Com sua permissão, a página disponibiliza eventos genéricos de navegação e guarda sua preferência neste navegador. Você pode alterá-la aqui."
   : "A medição opcional está desativada nesta versão.";
 
-for (const id of ["checkout", "sticky-buy"]) {
-  element(id).addEventListener("click", event => {
+for (const id of ["checkout", "sticky-buy", "checkout-top"]) {
+  element(id)?.addEventListener("click", event => {
     if (!canSell) event.preventDefault();
     track("offer_click");
   });
