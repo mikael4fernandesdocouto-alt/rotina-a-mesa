@@ -124,6 +124,21 @@ legend { font-size: clamp(34px, 4.4vw, 52px); line-height: 1.02; padding: 0; mar
 
 /* ---------- Resultado ---------- */
 .result-head { padding: 32px 0 30px; border-bottom: 1px solid var(--line); }
+
+/* Oferta resumida no topo do resultado (só no celular) */
+.quick-offer { display: none; }
+@media (max-width: 900px) {
+  .quick-offer {
+    display: block; margin: 22px 0 4px; padding: 18px 18px 16px;
+    background: var(--soft); border-top: 5px solid var(--blue);
+    border-radius: 0 0 10px 10px;
+  }
+  .quick-price { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .quick-price strong { font-family: var(--display); font-size: 2.125rem; line-height: 1; }
+  .quick-price span { font-size: .8125rem; color: var(--muted); }
+  .quick-offer .button { width: 100%; }
+  .quick-link { display: inline-block; margin-top: 12px; font-size: .875rem; }
+}
 .result-head .kicker { margin: 18px 0 12px; }
 .profile-badge { display: inline-block; font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--blue); background: var(--soft); border-radius: 999px; padding: 6px 13px; margin: 0 0 16px; }
 .result-head h1 { font-size: clamp(38px, 5vw, 68px); max-width: 20ch; }
