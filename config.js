@@ -27,7 +27,7 @@ window.ROTINA_CONFIG = {
   offer: {
     anchorBRL: 138,
     guaranteeDays: 7,
-    banner: "Kit Rotina à Mesa com preço de lançamento",
+    banner: "5 jantares, 1 compra com preço de lançamento",
     priceNote: "Pagamento único. Sai mais barato que uma semana de delivery.",
     bonuses: [
       { title: "Bônus: roteiro de revisão de domingo", detail: "15 minutos para fechar a semana seguinte", value: 27 },
