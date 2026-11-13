@@ -263,7 +263,7 @@ function renderOffer() {
 
   element("countdown").hidden = !offerConfig.countdown;
   element("topbar").hidden = !(offerConfig.countdown || (sold > 0 && total > 0));
-  element("topbar-text").textContent = offerConfig.banner || "Kit Rotina à Mesa com preço de lançamento";
+  element("topbar-text").textContent = offerConfig.banner || "5 jantares, 1 compra com preço de lançamento";
 
   if (canSell) {
     element("preview-note").hidden = true;
